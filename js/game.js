@@ -1,31 +1,52 @@
-var createGame = function() {
+var createGame = function (sprite) {
 
-    var palavraSecreta = '';
+    var etapa = 1;
     var lacunas = [];
-    var etapa = 0;
+    var palavraSecreta = '';
 
-    var setPalavra = function (palavra){
-        palavraSecreta = palavra;
+    var criaLacunas = function () {
 
-        console.log(palavraSecreta);
-        getEtapa();
+        lacunas = Array(palavraSecreta.length).fill('');
     };
 
-    var getLacunas = function (){
-        lacunas = Array(palavraSecreta.length).fill('');
+    var proximaEtapa = function () {
 
-        console.log(lacunas);
-        getEtapa();
+        etapa = 2;
+    };
+
+    var setPalavraSecreta = function (palavra) {
+
+        palavraSecreta = palavra;
+        criaLacunas();
+        proximaEtapa();
+    };
+
+    var getLacunas = function () {
+
+        return lacunas;
     };
 
     var getEtapa = function () {
-        etapa++;
-        console.log(etapa);
+
+        return etapa;
     };
 
-    return{
-        setPalavra: setPalavra,
+    var processaChute = function (chute) {
+
+        var exp = new RegExp(chute, 'gi')
+            , resultado
+            , acertou = false;
+
+        while (resultado = exp.exec(palavraSecreta)) 
+            acertou = lacunas[resultado.index] = chute;
+
+        if (!acertou) sprite.nextFrame();
+    };
+
+    return {
+        setPalavraSecreta: setPalavraSecreta,
         getLacunas: getLacunas,
-        getEtapa: getEtapa
+        getEtapa: getEtapa,
+        processaChute: processaChute
     }
 };
