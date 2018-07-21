@@ -1,8 +1,7 @@
 var createGame = function (sprite) {
 
-    var etapa = 1;
-    var lacunas = [];
-    var palavraSecreta = '';
+    var etapa = 1, lacunas = [], palavraSecreta = '',
+        ganhou = false, perdeu = false;
 
     var criaLacunas = function () {
 
@@ -33,9 +32,7 @@ var createGame = function (sprite) {
 
     var processaChute = function (chute) {
 
-        var exp = new RegExp(chute, 'gi')
-            , resultado
-            , acertou = false;
+        var exp = new RegExp(chute, 'gi'), resultado, acertou = false;
 
         while (resultado = exp.exec(palavraSecreta)) 
             acertou = lacunas[resultado.index] = chute;
@@ -43,10 +40,36 @@ var createGame = function (sprite) {
         if (!acertou) sprite.nextFrame();
     };
 
+    var ganhou = function () {
+        return lacunas.length ? !lacunas.some(function(lacuna){
+            return lacuna == '';
+        })
+        : false;
+    };
+
+    var perdeu = function () {
+        return sprite.isFinished();
+    };
+
+    var ganhouOuPerdeu = function () {
+        return ganhou() || perdeu();
+    };
+
+    var reinicia = function () {
+        etapa = 1;
+        lacunas = [];
+        palavraSecreta = '';
+        sprite.reset();
+    };
+
     return {
         setPalavraSecreta: setPalavraSecreta,
         getLacunas: getLacunas,
         getEtapa: getEtapa,
-        processaChute: processaChute
+        processaChute: processaChute,
+        ganhou: ganhou,
+        perdeu: perdeu,
+        ganhouOuPerdeu: ganhouOuPerdeu,
+        reinicia: reinicia
     }
 };
