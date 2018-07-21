@@ -29,6 +29,9 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/sprite.js"></script>
     <script src="js/game.js"></script>
-    <script> game = createGame(createSprite('.sprite'));</script>
+    <script src="js/controle.js"></script>
+    <script>
+        createController(createGame(createSprite('.sprite'))).inicia();
+    </script>
 </body>
 </html>
