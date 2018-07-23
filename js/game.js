@@ -14,7 +14,7 @@ var createGame = function (sprite) {
     };
 
     var setPalavraSecreta = function (palavra) {
-
+        if(!palavra.trim()) throw Error('Palavra inválida');
         palavraSecreta = palavra;
         criaLacunas();
         proximaEtapa();
@@ -31,10 +31,13 @@ var createGame = function (sprite) {
     };
 
     var processaChute = function (chute) {
+        if(!chute.trim()) throw Error('Chute inválido');
 
-        var exp = new RegExp(chute, 'gi'), resultado, acertou = false;
+        var exp = new RegExp(chute, 'gi')
+            , resultado
+            , acertou = false;
 
-        while (resultado = exp.exec(palavraSecreta)) 
+        while (resultado = exp.exec(palavraSecreta))
             acertou = lacunas[resultado.index] = chute;
 
         if (!acertou) sprite.nextFrame();
