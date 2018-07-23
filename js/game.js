@@ -1,41 +1,27 @@
-var createGame = function (sprite) {
+const createGame = sprite => {
 
-    var etapa = 1, lacunas = [], palavraSecreta = '',
-        ganhou = false, perdeu = false;
+    let etapa = 1, lacunas = [], palavraSecreta = '';
 
-    var criaLacunas = function () {
+    const criaLacunas = () => lacunas = Array(palavraSecreta.length).fill('');
 
-        lacunas = Array(palavraSecreta.length).fill('');
-    };
+    const proximaEtapa = () => etapa = 2;
 
-    var proximaEtapa = function () {
-
-        etapa = 2;
-    };
-
-    var setPalavraSecreta = function (palavra) {
+    const setPalavraSecreta = palavra => {
         if(!palavra.trim()) throw Error('Palavra inválida');
         palavraSecreta = palavra;
         criaLacunas();
         proximaEtapa();
     };
 
-    var getLacunas = function () {
+    const getLacunas = () => lacunas;
 
-        return lacunas;
-    };
+    const getEtapa = () => etapa;
 
-    var getEtapa = function () {
-
-        return etapa;
-    };
-
-    var processaChute = function (chute) {
+    const processaChute = chute => {
         if(!chute.trim()) throw Error('Chute inválido');
 
-        var exp = new RegExp(chute, 'gi')
-            , resultado
-            , acertou = false;
+        const exp = new RegExp(chute, 'gi');
+        let resultado, acertou = false;
 
         while (resultado = exp.exec(palavraSecreta))
             acertou = lacunas[resultado.index] = chute;
@@ -43,22 +29,18 @@ var createGame = function (sprite) {
         if (!acertou) sprite.nextFrame();
     };
 
-    var ganhou = function () {
-        return lacunas.length ? !lacunas.some(function(lacuna){
+    const ganhou = () => {
+        return lacunas.length ? !lacunas.some( lacuna => {
             return lacuna == '';
         })
         : false;
     };
 
-    var perdeu = function () {
-        return sprite.isFinished();
-    };
+    const perdeu = () => sprite.isFinished();
 
-    var ganhouOuPerdeu = function () {
-        return ganhou() || perdeu();
-    };
+    const ganhouOuPerdeu = () => ganhou() || perdeu();
 
-    var reinicia = function () {
+    const reinicia = () => {
         etapa = 1;
         lacunas = [];
         palavraSecreta = '';
@@ -66,13 +48,13 @@ var createGame = function (sprite) {
     };
 
     return {
-        setPalavraSecreta: setPalavraSecreta,
-        getLacunas: getLacunas,
-        getEtapa: getEtapa,
-        processaChute: processaChute,
-        ganhou: ganhou,
-        perdeu: perdeu,
-        ganhouOuPerdeu: ganhouOuPerdeu,
-        reinicia: reinicia
+        setPalavraSecreta,
+        getLacunas,
+        getEtapa,
+        processaChute,
+        ganhou,
+        perdeu,
+        ganhouOuPerdeu,
+        reinicia
     }
 };

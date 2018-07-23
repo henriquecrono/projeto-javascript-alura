@@ -1,22 +1,19 @@
-var createController = function (jogo) {
+const createController = jogo => {
 
-    var $entrada = $('#entrada');
-    var $lacunas = $('.lacunas');
+    const $entrada = $('#entrada');
+    const $lacunas = $('.lacunas');
 
-    var exibeLacunas = function () {
+    const exibeLacunas = () => {
 
         $lacunas.empty();
-        jogo.getLacunas().forEach(function (lacuna) {
+        jogo.getLacunas().forEach(lacuna => {
             $('<li>').addClass('lacuna').text(lacuna).appendTo($lacunas);
         });
     };
 
-    var mudaPlaceHolder = function (texto) {
+    const mudaPlaceHolder = texto => $entrada.val('').attr('placeholder', texto);
 
-        $entrada.val('').attr('placeholder', texto);
-    };
-
-    var guardaPalavraSecreta = function () {
+    const guardaPalavraSecreta = () => {
         try{
             jogo.setPalavraSecreta($entrada.val().trim());
             $entrada.val('');
@@ -28,16 +25,16 @@ var createController = function (jogo) {
         }        
     };
 
-    var leChute = function () {
+    const leChute = () => {
         try{
-            var chute = $entrada.val().trim().substr(0, 1);
+            let chute = $entrada.val().trim().substr(0, 1);
             $entrada.val('');
             jogo.processaChute(chute);
             exibeLacunas();
 
             if (jogo.ganhouOuPerdeu()) {
-                
-                setTimeout(function () {
+
+                setTimeout(() => {
                     if (jogo.ganhou()) {
                         alert('Ganhou, parabéns!!!');
                     } else if (jogo.perdeu()) {
@@ -51,7 +48,7 @@ var createController = function (jogo) {
         }  
     };
 
-    var reinicia = function () {
+    const reinicia = () => {
 
         $lacunas.empty();
         mudaPlaceHolder('Palavra secreta');
@@ -59,9 +56,9 @@ var createController = function (jogo) {
         jogo.reinicia();
     };
 
-    var inicia = function () {
+    const inicia = () => {
 
-        $entrada.keypress(function (event) {
+        $entrada.keypress(event => {
             if (event.which == 13) {
                 switch (jogo.getEtapa()) {
                     case 1:
@@ -75,5 +72,5 @@ var createController = function (jogo) {
         });
     }
 
-    return { inicia: inicia };
+    return { inicia };
 };
